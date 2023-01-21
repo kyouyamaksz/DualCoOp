@@ -13,6 +13,7 @@ import pickle
 
 
 class CocoDetection(datasets.coco.CocoDetection):
+    # p: data split, partial: label mask
     def __init__(self, root, data_split, img_size=224, p=1, annFile="", label_mask=None, partial=1+1e-6):
         # super(CocoDetection, self).__init__()
         self.classnames = ["person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat",
@@ -101,7 +102,8 @@ class CocoDetection(datasets.coco.CocoDetection):
         img_id = self.ids[index]
         ann_ids = coco.getAnnIds(imgIds=img_id)
         target = coco.loadAnns(ann_ids)
-
+        
+        # ?
         output = torch.zeros((3, len(self.classnames)), dtype=torch.long)
         for obj in target:
             if obj['area'] < 32 * 32:
